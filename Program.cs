@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 // Conexión a la base de datos SQLite
-string connectionString = "Data Source=fortinet_prices.db";
+string connectionString = $"Data Source={Path.Combine(Directory.GetCurrentDirectory(), "fortinet_prices.db")}";
 
 app.UseDefaultFiles(new DefaultFilesOptions
 {

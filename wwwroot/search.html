@@ -341,73 +341,73 @@
         let allResults = []; // Variable global para almacenar todos los resultados
 
         async function search() {
-    const query = document.getElementById('searchInput').value;
-    const response = await fetch(`/search?query=${query}`);
-    const data = await response.json();
+            const query = document.getElementById('searchInput').value;
+            const response = await fetch(`/search?query=${query}`);
+            const data = await response.json();
 
-    // Guardar todos los resultados en la variable global
-    allResults = data;
+            // Guardar todos los resultados en la variable global
+            allResults = data;
 
-    // Filtrar y priorizar los resultados
-    const prioritizedResults = prioritizeResults(data, query);
-    displayResults(prioritizedResults, true);
-}
-
-function prioritizeResults(results, query) {
-    // SKU prioritarios según formato
-    const priorityPatterns = [
-        new RegExp(`^FG-${query}`, 'i'), // Ejemplo: FG-100F
-        new RegExp(`^FG-${query}-BDL`, 'i'), // Ejemplo: FG-100F-BDL-xx
-        new RegExp(`^FC-10-F${query}-950`, 'i'), // Ejemplo: FC-10-F100F-950-xx
-        new RegExp(`^FC-10-F${query}-247`, 'i') // Ejemplo: FC-10-F100F-247-xx
-    ];
-
-    const prioritized = [];
-    const others = [];
-
-    results.forEach((item) => {
-        const sku = item.description2 || '';
-        if (priorityPatterns.some((pattern) => pattern.test(sku))) {
-            prioritized.push(item);
-        } else {
-            others.push(item);
+            // Filtrar y priorizar los resultados
+            const prioritizedResults = prioritizeResults(data, query);
+            displayResults(prioritizedResults, true);
         }
-    });
 
-    return [...prioritized, ...others];
-}
+        function prioritizeResults(results, query) {
+            // SKU prioritarios según formato
+            const priorityPatterns = [
+                new RegExp(`^FG-${query}`, 'i'), // Ejemplo: FG-100F
+                new RegExp(`^FG-${query}-BDL`, 'i'), // Ejemplo: FG-100F-BDL-xx
+                new RegExp(`^FC-10-F${query}-950`, 'i'), // Ejemplo: FC-10-F100F-950-xx
+                new RegExp(`^FC-10-F${query}-247`, 'i') // Ejemplo: FC-10-F100F-247-xx
+            ];
 
-function displayResults(results, limited = false) {
-    const resultsBody = document.getElementById('resultsBody');
-    resultsBody.innerHTML = '';
+            const prioritized = [];
+            const others = [];
 
-    // Limitar resultados iniciales si `limited` es verdadero
-    const displayCount = limited ? 10 : results.length;
-    results.slice(0, displayCount).forEach((item) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${item.productFamilyGroup || '-'}</td>
-            <td>${item.description2 || '-'}</td>
-            <td>${item.description1 || '-'}</td>
-            <td>$${item.standardPrice || '0'}</td>
-            <td>$${item.discountedPrice || '0'}</td>
-        `;
-        row.onclick = () => showDetails(item, row);
-        resultsBody.appendChild(row);
-    });
+            results.forEach((item) => {
+                const sku = item.description2 || '';
+                if (priorityPatterns.some((pattern) => pattern.test(sku))) {
+                    prioritized.push(item);
+                } else {
+                    others.push(item);
+                }
+            });
 
-    // Mostrar el botón "Ver más resultados" si hay más resultados ocultos
-    if (limited && results.length > displayCount) {
-        const moreRow = document.createElement('tr');
-        moreRow.innerHTML = `
-            <td colspan="5" style="text-align: center; cursor: pointer; color: #007bff; font-weight: bold;">
-                Ver más resultados
-            </td>
-        `;
-        moreRow.onclick = () => displayResults(results, false);
-        resultsBody.appendChild(moreRow);
-    }
-}
+            return [...prioritized, ...others];
+        }
+
+        function displayResults(results, limited = false) {
+            const resultsBody = document.getElementById('resultsBody');
+            resultsBody.innerHTML = '';
+
+            // Limitar resultados iniciales si `limited` es verdadero
+            const displayCount = limited ? 10 : results.length;
+            results.slice(0, displayCount).forEach((item) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.productFamilyGroup || '-'}</td>
+                    <td>${item.description2 || '-'}</td>
+                    <td>${item.description1 || '-'}</td>
+                    <td>$${item.standardPrice || '0'}</td>
+                    <td>$${item.discountedPrice || '0'}</td>
+                `;
+                row.onclick = () => showDetails(item, row);
+                resultsBody.appendChild(row);
+            });
+
+            // Mostrar el botón "Ver más resultados" si hay más resultados ocultos
+            if (limited && results.length > displayCount) {
+                const moreRow = document.createElement('tr');
+                moreRow.innerHTML = `
+                    <td colspan="5" style="text-align: center; cursor: pointer; color: #007bff; font-weight: bold;">
+                        Ver más resultados
+                    </td>
+                `;
+                moreRow.onclick = () => displayResults(results, false);
+                resultsBody.appendChild(moreRow);
+            }
+        }
         // Escuchar la tecla Enter en la barra de búsqueda
         document.getElementById('searchInput').addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
