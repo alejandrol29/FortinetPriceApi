@@ -193,7 +193,7 @@ app.MapGet("/search", (string? query) =>
         return Results.BadRequest("The query parameter is required.");
     }
 
-    using var connection = new SqliteConnection("Data Source=fortinet_prices.db");
+    using var connection = new SqliteConnection("Data Source=wwwroot/fortinet_prices.db");
     connection.Open();
 
     string searchQuery = @"
