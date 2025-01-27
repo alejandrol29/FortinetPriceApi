@@ -9,7 +9,6 @@ C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\obj\Debug\net8.0\FortinetPric
 C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\appsettings.json
 C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\vercel.json
-C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\FortinetPriceApi.staticwebassets.runtime.json
 C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\FortinetPriceApi.exe
 C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\FortinetPriceApi.deps.json
 C:\Users\aclopez\Documents\GitHub\FortinetPriceApi\bin\Debug\net8.0\FortinetPriceApi.runtimeconfig.json

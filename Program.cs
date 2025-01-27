@@ -4,6 +4,7 @@ using System.Data;
 using OfficeOpenXml;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +21,12 @@ app.UseDefaultFiles(new DefaultFilesOptions
     DefaultFileNames = new List<string> { "search.html" }
 });
 
-app.UseStaticFiles();
-
+// Configurar el middleware para servir archivos estáticos desde la raíz
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(builder.Environment.ContentRootPath),
+    RequestPath = ""
+});
 
 // Inicialización de la base de datos
 app.MapGet("/init", () =>
@@ -193,7 +198,7 @@ app.MapGet("/search", (string? query) =>
         return Results.BadRequest("The query parameter is required.");
     }
 
-    using var connection = new SqliteConnection("Data Source=wwwroot/fortinet_prices.db");
+    using var connection = new SqliteConnection("Data Source=fortinet_prices.db");
     connection.Open();
 
     string searchQuery = @"
@@ -251,9 +256,6 @@ app.MapGet("/search", (string? query) =>
 
     return Results.Ok(results);
 });
-
-// Configuración para servir archivos estáticos (como upload.html)
-app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();

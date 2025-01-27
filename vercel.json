@@ -1,7 +1,6 @@
 {
   "routes": [
-    { "src": "/", "dest": "/wwwroot/search.html" },
-    { "src": "/search", "dest": "/search" },
-    { "src": "/(.*)", "dest": "/wwwroot/$1" }
+    { "src": "/", "dest": "/search.html" },
+    { "src": "/(.*)", "dest": "/$1" }
   ]
 }
