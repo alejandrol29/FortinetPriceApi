@@ -1,4 +1,5 @@
 {
+  "includeFiles": ["fortinet_prices.db"],
   "routes": [
     { "src": "/", "dest": "/wwwroot/search.html" },
     { "src": "/search", "dest": "/search" },
