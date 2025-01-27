@@ -1,9 +1,6 @@
 {
-    "rewrites": [
-      {
-        "source": "/(.*)",
-        "destination": "/wwwroot/search.html"
-      }
-    ]
-  }
-  
+  "routes": [
+    { "src": "/", "dest": "/wwwroot/search.html" },
+    { "src": "/(.*)", "dest": "/wwwroot/$1" }
+  ]
+}
