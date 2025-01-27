@@ -1,6 +1,5 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/wwwroot/search.html" },
-    { "source": "/(.*)", "destination": "/wwwroot/$1" }
+  "routes": [
+    { "src": "/(.*)", "dest": "/FortinetPriceApi/wwwroot/$1" }
   ]
 }
