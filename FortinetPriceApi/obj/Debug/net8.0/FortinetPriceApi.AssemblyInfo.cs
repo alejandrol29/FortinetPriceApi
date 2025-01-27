@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FortinetPriceApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e4ec4b86bf25f7745b3b88edba906683ce4c76ee")]
 [assembly: System.Reflection.AssemblyProductAttribute("FortinetPriceApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FortinetPriceApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

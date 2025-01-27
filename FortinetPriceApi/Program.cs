@@ -15,6 +15,14 @@ var app = builder.Build();
 // Conexión a la base de datos SQLite
 string connectionString = "Data Source=fortinet_prices.db";
 
+app.UseDefaultFiles(new DefaultFilesOptions
+{
+    DefaultFileNames = new List<string> { "search.html" }
+});
+
+app.UseStaticFiles();
+
+
 // Inicialización de la base de datos
 app.MapGet("/init", () =>
 {
