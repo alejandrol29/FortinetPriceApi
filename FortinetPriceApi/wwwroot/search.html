@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortinet lista de precios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto 10px;
+            max-width: 200px;
+        }
+        .search-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.search-container input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%; /* Ajusta el ancho completo dentro del contenedor relativo */
+}
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .result-table th, .result-table td {
+            padding: 10px;
+            text-align: left;
+        }
+        .result-table th {
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #ccc;
+        }
+        .result-table td {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .result-table tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 1000;
+            width: 400px;
+        }
+        .modal.active {
+            display: block;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header .close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .modal-body {
+            padding: 10px 0;
+        }
+        .modal-body .input-group {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .modal-body .input-group label {
+            margin-bottom: 5px; /* Espacio entre el label y el input */
+            font-weight: bold;
+            font-size: 14px; /* Ajusta el tamaño del texto del label */
+        }
+        .modal-body .input-group input {
+            width: 100%;
+            max-width: 150px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+            appearance: none; /* Oculta los botones de incremento/decremento */
+            -moz-appearance: textfield; /* Firefox */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .modal-body .input-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            outline: none;
+        }
+
+        .modal-body .update-btn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .modal-body .update-btn:hover {
+            background-color: #0056b3;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 999;
+        }
+        .overlay.active {
+            display: block;
+        }
+
+        /* Efecto hover para las filas de la tabla */
+        .result-table tr:hover {
+            background-color: #e7f3ff; /* Fondo azul claro */
+            border-left: 4px solid #007bff; /* Borde azul a la izquierda */
+            cursor: pointer; /* Cambia el cursor a una mano */
+        }
+
+        /* Efecto para la fila seleccionada */
+        .result-table tr.selected {
+            background-color: #d6eaff; /* Fondo azul más intenso */
+            border-left: 4px solid #0056b3; /* Borde azul más oscuro */
+            cursor: default; /* Cursor por defecto */
+        }
+
+        /* Elimina el efecto hover en los encabezados */
+        .result-table thead tr:hover {
+            background-color: unset; /* Sin fondo */
+            border-left: none; /* Sin borde */
+            cursor: default; /* Cursor por defecto */
+        }
+    </style>
+    <style>
+        .suggestion-box {
+    position: absolute;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    width: 100%; /* Igual al ancho del input */
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-box div {
+    padding: 10px; /* Espaciado interno */
+    cursor: pointer; /* Indica que es seleccionable */
+}
+
+.suggestion-box div:hover {
+    background-color: #007bff; /* Fondo azul al pasar por encima */
+    color: white; /* Texto blanco */
+}
+
+    
+        .suggestion-box.hidden {
+            display: none;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <img src="fortinet_logo.png" alt="Fortinet Logo" class="logo">
+        <h1>Búsqueda de precios Fortinet</h1>
+        <div class="search-container">
+            <div style="position: relative; width: 100%; max-width: 500px;">
+                <input type="text" id="searchInput" placeholder="Buscar por SKU, descripción..." oninput="handleInput()" />
+                <div id="suggestionBox" class="suggestion-box hidden"></div>
+            </div>
+            <button onclick="search()">Buscar <i class="fas fa-search"></i></button>
+        </div>        
+
+        <!-- Table for search results -->
+        <table class="result-table" id="resultsTable">
+            <thead>
+                <tr>
+                    <th>Familia de producto</th>
+                    <th>SKU</th>
+                    <th>Descripción</th>
+                    <th>Precio estándar</th>
+                    <th>Precio partner</th>
+                </tr>
+            </thead>
+            <tbody id="resultsBody">
+                <!-- Resultados dinámicos -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="overlay" id="modalOverlay"></div>
+    <div class="modal" id="detailsModal">
+        <div class="modal-header">
+            <span>Detalles del producto</span>
+            <button class="close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p><strong>Familia de producto:</strong> <span id="productFamilyGroup"></span></p>
+            <p><strong>SKU:</strong> <span id="sku"></span></p>
+            <p><strong>Descripción:</strong> <span id="description"></span></p>
+            <p><strong>Precio estándar:</strong> $<span id="standardPrice"></span></p>
+            <p><strong>Precio partner:</strong> $<span id="discountedPrice"></span></p>
+            <p><strong>Costo plaza:</strong> $<span id="costPlaza"></span></p>
+            <p><strong>Precio Sugerido de Venta:</strong> $<span id="suggestedPrice"></span></p>
+            <hr />
+            <div class="input-group">
+                <label for="importCoefficient"><strong>Coeficiente de Importación (%):</strong></label>
+                <br>
+                <input type="number" id="importCoefficient" value="20" />
+            </div>
+            <div class="input-group">
+                <label for="marginCoefficient"><strong>Margen Sugerido (%):</strong></label>
+                <input type="number" id="marginCoefficient" value="20" />
+            </div>
+            <button class="update-btn" onclick="updatePrices()">Actualizar</button>
+        </div>
+    </div>
+
+    <script>
+        const suggestions = [
+            "FortiGate-100F",
+            "FortiGate-50E",
+            "FortiSwitch-108E",
+            "FortiAP-U231F",
+            "FortiAnalyzer-100G",
+            "FortiManager-400E"
+            // Agrega más SKU o descripciones aquí.
+        ];
+    
+        function handleInput() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const suggestionBox = document.getElementById('suggestionBox');
+    
+            // Filtrar las sugerencias según el texto del input
+            const filteredSuggestions = suggestions.filter(item =>
+                item.toLowerCase().includes(input)
+            );
+    
+            // Limpiar el cuadro de sugerencias
+            suggestionBox.innerHTML = '';
+            
+            if (filteredSuggestions.length === 0 || input.trim() === '') {
+                suggestionBox.classList.add('hidden');
+                return;
+            }
+    
+            // Mostrar las sugerencias
+            filteredSuggestions.forEach(suggestion => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.textContent = suggestion;
+                suggestionDiv.onclick = () => {
+                    document.getElementById('searchInput').value = suggestion;
+                    suggestionBox.classList.add('hidden'); // Ocultar las sugerencias
+                    search(); // Llamar a la función de búsqueda
+                };
+                suggestionBox.appendChild(suggestionDiv);
+            });
+    
+            suggestionBox.classList.remove('hidden');
+        }
+    
+        // Ocultar sugerencias al hacer clic fuera del cuadro
+        document.addEventListener('click', (event) => {
+            const suggestionBox = document.getElementById('suggestionBox');
+            const searchInput = document.getElementById('searchInput');
+            if (!suggestionBox.contains(event.target) && event.target !== searchInput) {
+                suggestionBox.classList.add('hidden');
+            }
+        });
+    </script>
+    
+    <script>
+        let allResults = []; // Variable global para almacenar todos los resultados
+
+        async function search() {
+    const query = document.getElementById('searchInput').value;
+    const response = await fetch(`/search?query=${query}`);
+    const data = await response.json();
+
+    // Guardar todos los resultados en la variable global
+    allResults = data;
+
+    // Filtrar y priorizar los resultados
+    const prioritizedResults = prioritizeResults(data, query);
+    displayResults(prioritizedResults, true);
+}
+
+function prioritizeResults(results, query) {
+    // SKU prioritarios según formato
+    const priorityPatterns = [
+        new RegExp(`^FG-${query}`, 'i'), // Ejemplo: FG-100F
+        new RegExp(`^FG-${query}-BDL`, 'i'), // Ejemplo: FG-100F-BDL-xx
+        new RegExp(`^FC-10-F${query}-950`, 'i'), // Ejemplo: FC-10-F100F-950-xx
+        new RegExp(`^FC-10-F${query}-247`, 'i') // Ejemplo: FC-10-F100F-247-xx
+    ];
+
+    const prioritized = [];
+    const others = [];
+
+    results.forEach((item) => {
+        const sku = item.description2 || '';
+        if (priorityPatterns.some((pattern) => pattern.test(sku))) {
+            prioritized.push(item);
+        } else {
+            others.push(item);
+        }
+    });
+
+    return [...prioritized, ...others];
+}
+
+function displayResults(results, limited = false) {
+    const resultsBody = document.getElementById('resultsBody');
+    resultsBody.innerHTML = '';
+
+    // Limitar resultados iniciales si `limited` es verdadero
+    const displayCount = limited ? 10 : results.length;
+    results.slice(0, displayCount).forEach((item) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${item.productFamilyGroup || '-'}</td>
+            <td>${item.description2 || '-'}</td>
+            <td>${item.description1 || '-'}</td>
+            <td>$${item.standardPrice || '0'}</td>
+            <td>$${item.discountedPrice || '0'}</td>
+        `;
+        row.onclick = () => showDetails(item, row);
+        resultsBody.appendChild(row);
+    });
+
+    // Mostrar el botón "Ver más resultados" si hay más resultados ocultos
+    if (limited && results.length > displayCount) {
+        const moreRow = document.createElement('tr');
+        moreRow.innerHTML = `
+            <td colspan="5" style="text-align: center; cursor: pointer; color: #007bff; font-weight: bold;">
+                Ver más resultados
+            </td>
+        `;
+        moreRow.onclick = () => displayResults(results, false);
+        resultsBody.appendChild(moreRow);
+    }
+}
+        // Escuchar la tecla Enter en la barra de búsqueda
+        document.getElementById('searchInput').addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                search();
+            }
+        });
+
+        function normalizeNumber(value) {
+            return parseFloat(value.replace(/\./g, '').replace(',', '.'));
+        }
+
+        function formatNumberUY(value) {
+            return new Intl.NumberFormat('es-UY', { minimumFractionDigits: 0 }).format(value);
+        }
+
+        function showDetails(item, row) {
+            // Remover la clase "selected" de todas las filas
+            document.querySelectorAll('.result-table tr').forEach((r) => r.classList.remove('selected'));
+
+            // Agregar la clase "selected" a la fila seleccionada
+            row.classList.add('selected');
+
+            // Rellenar los detalles en el modal
+            document.getElementById('productFamilyGroup').textContent = item.productFamilyGroup || '-';
+            document.getElementById('sku').textContent = item.description2 || '-';
+            document.getElementById('description').textContent = item.description1 || '-';
+            document.getElementById('standardPrice').textContent = item.standardPrice || '0';
+            document.getElementById('discountedPrice').textContent = item.discountedPrice || '0';
+
+            // Normalizar el precio descontado
+            const discountedPrice = normalizeNumber(item.discountedPrice || '0');
+
+            // Verificar la categoría para decidir si mostrar el coeficiente de importación
+            const categoriesWithoutImport = ['C', 'D', 'E', 'S']; // Categorías que no aplican coeficiente de importación
+            const category = item.category || '';
+            const importCoefficientField = document.getElementById('importCoefficient');
+            const importCoefficientGroup = importCoefficientField.closest('.input-group');
+
+            if (categoriesWithoutImport.includes(category)) {
+                importCoefficientGroup.style.display = 'none';
+                document.getElementById('costPlaza').textContent = formatNumberUY(discountedPrice);
+            } else {
+                importCoefficientGroup.style.display = 'block';
+
+                const importCoefficient = parseFloat(importCoefficientField.value) / 100 || 0;
+                const costPlaza = Math.round(discountedPrice * (1 + importCoefficient));
+                document.getElementById('costPlaza').textContent = formatNumberUY(costPlaza);
+            }
+
+            // Calcular y mostrar el precio sugerido de venta
+            const marginCoefficient = parseFloat(document.getElementById('marginCoefficient').value) / 100 || 0;
+            const suggestedPrice = Math.round(discountedPrice / (1 - marginCoefficient));
+            document.getElementById('suggestedPrice').textContent = formatNumberUY(suggestedPrice);
+
+            // Mostrar el modal
+            document.getElementById('detailsModal').classList.add('active');
+            document.getElementById('modalOverlay').classList.add('active');
+        }
+
+        function updatePrices() {
+            const discountedPrice = normalizeNumber(document.getElementById('discountedPrice').textContent) || 0;
+            const importCoefficientField = document.getElementById('importCoefficient');
+            const importCoefficientGroup = importCoefficientField.closest('.input-group');
+
+            let costPlaza;
+
+            if (importCoefficientGroup.style.display === 'none') {
+                costPlaza = discountedPrice; // Sin coeficiente de importación
+            } else {
+                const importCoefficient = parseFloat(importCoefficientField.value) / 100 || 0;
+                costPlaza = Math.round(discountedPrice * (1 + importCoefficient));
+            }
+
+            const marginCoefficient = parseFloat(document.getElementById('marginCoefficient').value) / 100 || 0;
+            const suggestedPrice = Math.round(costPlaza / (1 - marginCoefficient));
+
+            document.getElementById('costPlaza').textContent = formatNumberUY(costPlaza);
+            document.getElementById('suggestedPrice').textContent = formatNumberUY(suggestedPrice);
+        }
+
+
+        function closeModal() {
+            document.getElementById('detailsModal').classList.remove('active');
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Cierra el modal al hacer clic en el overlay
+        document.getElementById('modalOverlay').addEventListener('click', closeModal);
+
+    </script>
+</body>
+</html>

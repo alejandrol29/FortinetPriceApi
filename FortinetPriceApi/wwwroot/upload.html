@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Excel File</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .status {
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Excel File</h1>
+        <form id="uploadForm">
+            <input type="file" id="fileInput" name="file" accept=".xlsx" required />
+            <br />
+            <button type="submit">Upload</button>
+        </form>
+        <div class="status" id="status"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const statusDiv = document.getElementById('status');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Evitar el envío del formulario tradicional
+
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files.length) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('http://localhost:5041/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    statusDiv.textContent = 'File uploaded successfully!';
+                } else {
+                    statusDiv.textContent = 'Failed to upload the file.';
+                    console.error(await response.text());
+                }
+            } catch (error) {
+                statusDiv.textContent = 'An error occurred while uploading.';
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
