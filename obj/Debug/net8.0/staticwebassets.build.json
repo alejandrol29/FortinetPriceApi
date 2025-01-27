@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "t806xo0FLTdYFuxu8tJv2FdPvuTUlPN7sygsoazwV/g=",
+  "Hash": "SDRCP0K7WIdJl146HU5vxOxVeXyweoNrBoWb5slkwtI=",
   "Source": "FortinetPriceApi",
   "BasePath": "_content/FortinetPriceApi",
   "Mode": "Default",
@@ -150,12 +150,12 @@
       "OriginalItemSpec": "wwwroot\\assets\\favicon\\site.webmanifest"
     },
     {
-      "Identity": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\fortinet_logo.png",
+      "Identity": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\fortinet-logo.png",
       "SourceId": "FortinetPriceApi",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\",
       "BasePath": "_content/FortinetPriceApi",
-      "RelativePath": "fortinet_logo.png",
+      "RelativePath": "fortinet-logo.png",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -166,7 +166,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\fortinet_logo.png"
+      "OriginalItemSpec": "wwwroot\\fortinet-logo.png"
     },
     {
       "Identity": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\search.html",

@@ -29,8 +29,8 @@
       "PackagePath": "staticwebassets\\assets\\favicon\\site.webmanifest"
     },
     {
-      "Id": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\fortinet_logo.png",
-      "PackagePath": "staticwebassets\\fortinet_logo.png"
+      "Id": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\fortinet-logo.png",
+      "PackagePath": "staticwebassets\\fortinet-logo.png"
     },
     {
       "Id": "C:\\Users\\aclopez\\Documents\\GitHub\\FortinetPriceApi\\wwwroot\\search.html",

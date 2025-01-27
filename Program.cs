@@ -20,13 +20,7 @@ app.UseDefaultFiles(new DefaultFilesOptions
     DefaultFileNames = new List<string> { "search.html" }
 });
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")),
-    RequestPath = ""
-});
-
+app.UseStaticFiles();
 
 
 // Inicialización de la base de datos
